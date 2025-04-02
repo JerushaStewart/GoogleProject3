@@ -54,7 +54,7 @@ def index():
     <link href="https://fonts.googleapis.com/css2?family=Style+Script&display=swap" rel="stylesheet">
     <link href="/style.css" rel="stylesheet" type="text/css" media="all">
   </head>
-  <body>
+  <body bgcolor="lightblue">
   
   <center><h1 class="title">To Upload or Not to Upload</h1></center>
   
@@ -210,15 +210,7 @@ def upload():
     # Save the JSON file
     with open(json_file_path, 'w') as json_file:
         json.dump(description_data, json_file, indent=4)
-
-    # Provide a download link for the JSON file
-    return render_template(
-        "results.html", 
-        title=description_data['title'], 
-        image=description_data['image'], 
-        description=description_data['files'], 
-        json_file=f"/download/{json_filename}"  # Use the new JSON filename here
-    )
+    return redirect('/')
 
 
 @app.route('/download/<filename>')
