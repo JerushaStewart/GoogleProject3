@@ -92,7 +92,7 @@ def index():
     }
 
     body {
-      background-color: white;
+      background-color: blue;
     }
 
     .title {
