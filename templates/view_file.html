@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ filename }}</title>
+</head>
+<body>
+    <h1>{{ filename }}</h1>
+    <img src="{{ url_for('get_file', filename=filename) }}" alt="{{ filename }}" style="max-width: 500px;">
+    {% if description_data %}
+    <h2>Description:</h2>
+    <p>{{ description_data.description }}</p>
+    {% else %}
+    <p>No description available.</p>
+    {% endif %}
+    <a href="/">Back to uploads</a>
+</body>
+</html>
