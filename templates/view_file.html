@@ -3,60 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ filename }}</title>
+    <title>View Image and Description</title>
 </head>
-<body bgcolor="lightblue">
-    <div class="main_box">
-  <h1>{{ description_data.title }}</h1>
-<img src="{{ image_url }}" alt="{{ filename }}" style="max-width: 500px;">
-  <p>{{ description_data.description }}</p>
-  <p>Timestamp: {{ description_data.timestamp }}</p>
-  <a href="/">Back to Upload</a>
-    </div>
-    <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    li {
-      list-style-type: none;
-    }
-
-    body {
-      background-color: white;
-    }
-
-    .title {
-      font-family: "Style Script", serif;
-      font-weight: 400;
-      font-style: bold;
-      font-size: 50px;
-      color: #ff62bf;
-    }
-
-    .main_box {
-      border-radius: 5px;
-      border: 5px solid #ff62bf;
-      background-color: pink;
-      margin: 10px 200px 0 200px;
-      padding: 25px;
-    }
-
-    h1 {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .box {
-      border: 1px solid black;
-    }
-
-    a {
-      text-decoration: none; 
-    }
-
-    </style> 
-</body>
+<body>
+    <h1>{{ filename }}</h1>
     
+    <!-- Display Image -->
+    <div>
+        <h2>Image:</h2>
+        <img src="{{ image_url }}" alt="{{ filename }}" width="500">
+    </div>
+    
+    <!-- Display Description -->
+    {% if description_data %}
+    <div>
+        <h2>Description:</h2>
+        <p><strong>{{ description_data.title }}</strong></p>
+        <p>{{ description_data.description }}</p>
+    </div>
+    {% else %}
+    <p>No description available for this image.</p>
+    {% endif %}
+    
+    <!-- Optionally, provide a link back to the index page -->
+    <a href="/">Back to Home</a>
+</body>
 </html>
