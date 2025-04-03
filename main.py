@@ -154,12 +154,17 @@ def view_file(filename):
         description_data = json.loads(json_content)
     except Exception as e:
         print(f"Error retrieving JSON file: {e}")
-    
+
+    # Generate public URL for the image
+    image_url = f"https://storage.googleapis.com/{BUCKET_NAME}/{filename}"
+
     return render_template(
         "view_file.html",  # You can create a view_file.html template to show details
         filename=filename,
-        description_data=description_data
+        description_data=description_data,
+        image_url=image_url  # Pass the image URL to the template
     )
+
 
 @app.route('/upload', methods=["POST"])
 def upload():
