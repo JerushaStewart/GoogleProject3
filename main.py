@@ -1,4 +1,4 @@
-import os
+should it look like this: import os
 import time
 import json
 from flask import Flask, redirect, request, render_template, send_from_directory
@@ -14,6 +14,7 @@ GEMINI_API_KEY = 'AIzaSyB4FC8y9BEYXZ2Uv09eYj3qXAL_bKjk6NU'
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Set up Flask app and Google Cloud Storage client
+app = Flask(__name__)
 BUCKET_NAME = "project2bucketapi"
 storage_client = storage.Client()
 
@@ -39,11 +40,7 @@ def upload_to_bucket(bucket_name, file_path, file_name):
     """Uploads the given file to Google Cloud Storage bucket."""
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(file_name)
-    blob.upload_from_filename(file_path, content_type='image/jpeg')  # Adjust MIME type if necessary
-    
-    # Make the file publicly accessible
-    blob.make_public()
-    print(f"File {file_name} uploaded and is publicly accessible at {blob.public_url}")
+    blob.upload_from_filename(file_path)
 
 def list_files_from_bucket(bucket_name):
     """Lists image files in the Google Cloud Storage bucket."""
@@ -145,8 +142,10 @@ def index():
 @app.route('/view/<filename>')
 def view_file(filename):
     """Serve the image file and its description."""
+    # Generate the path for the file
     json_filename = os.path.splitext(filename)[0] + '.json'  # Assuming JSON exists for this file
     
+    # Attempt to load the description from the JSON file
     description_data = None
     try:
         # Fetch JSON data from Cloud Storage
@@ -155,10 +154,9 @@ def view_file(filename):
         description_data = json.loads(json_content)
     except Exception as e:
         print(f"Error retrieving JSON file: {e}")
-        description_data = {"title": "No description available", "description": "Sorry, no description found."}
     
     return render_template(
-        "view_file.html",  # You need to create this template
+        "view_file.html",  # You can create a view_file.html template to show details
         filename=filename,
         description_data=description_data
     )
@@ -217,6 +215,7 @@ def upload():
 
     return redirect('/')
 
+
 @app.route('/download/<filename>')
 def download_json(filename):
     """Serves the generated JSON file from Google Cloud Storage."""
@@ -225,9 +224,8 @@ def download_json(filename):
 
 @app.route('/files/<filename>')
 def get_file(filename):
-    """Serves the uploaded image file from Google Cloud Storage."""
-    blob = storage_client.bucket(BUCKET_NAME).blob(filename)
-    return redirect(blob.public_url)
+    """Serves the uploaded image file."""
+    return send_from_directory('./files', filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
