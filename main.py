@@ -1,4 +1,4 @@
-should it look like this: import os
+import os
 import time
 import json
 from flask import Flask, redirect, request, render_template, send_from_directory
