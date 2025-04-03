@@ -6,7 +6,8 @@
     <title>{{ filename }}</title>
 </head>
 <body bgcolor="lightblue">
-    <h1>{{ filename }}</h1>
+    <div class="main_box">
+    <h1 class="title">{{ filename }}</h1>
     <img src="{{ url_for('get_file', filename=filename) }}" alt="{{ filename }}" style="max-width: 500px;">
     {% if description_data %}
     <h2>Description:</h2>
@@ -15,7 +16,7 @@
     <p>No description available.</p>
     {% endif %}
     <a href="/">Back to uploads</a>
-
+    </div>
     <style>
     * {
       margin: 0;
