@@ -40,7 +40,12 @@ def upload_to_bucket(bucket_name, file_path, file_name):
     """Uploads the given file to Google Cloud Storage bucket."""
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(file_name)
-    blob.upload_from_filename(file_path)
+    blob.upload_from_filename(file_path, content_type='image/jpeg')  # Adjust MIME type if necessary
+    
+    # Make the file publicly accessible
+    blob.make_public()
+    print(f"File {file_name} uploaded and is publicly accessible at {blob.public_url}")
+
 
 def list_files_from_bucket(bucket_name):
     """Lists image files in the Google Cloud Storage bucket."""
@@ -139,6 +144,17 @@ def index():
 
     return index_html
 
+def upload_to_bucket(bucket_name, file_path, file_name):
+    """Uploads the given file to Google Cloud Storage bucket."""
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(file_name)
+    blob.upload_from_filename(file_path)
+    
+    # Make the file publicly accessible
+    blob.make_public()
+    print(f"File {file_name} uploaded and is publicly accessible at {blob.public_url}")
+
+
 @app.route('/view/<filename>')
 def view_file(filename):
     """Serve the image file and its description."""
@@ -159,7 +175,9 @@ def view_file(filename):
         "view_file.html",  # You can create a view_file.html template to show details
         filename=filename,
         description_data=description_data
+        
     )
+
 
 @app.route('/upload', methods=["POST"])
 def upload():
@@ -226,7 +244,7 @@ def download_json(filename):
 def get_file(filename):
     """Serves the uploaded image file from Google Cloud Storage."""
     blob = storage_client.bucket(BUCKET_NAME).blob(filename)
-    return redirect(blob.public_url)  # Redirect to the public URL of the file in Google Cloud Storage
+    return redirect(blob.public_url)
 
 if __name__ == "__main__":
     app.run(debug=True)
