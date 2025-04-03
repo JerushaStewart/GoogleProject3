@@ -100,7 +100,7 @@ def index():
     }
 
     body {
-      background-color: lightblue;
+      background-color: white;
     }
 
     .title {
